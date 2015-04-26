@@ -57,9 +57,12 @@ include_directories(${Boost_INCLUDE_DIRS})
 enable_testing()
 
 # Add sub-directories
-add_subdirectory(libs/irclib/client/src)
-add_subdirectory(libs/irclib/client/test)
-add_subdirectory(libs/irclib/client/example)
+add_subdirectory(libs/containers/src)
+add_subdirectory(libs/containers/test)
+add_subdirectory(libs/containers/example)
+add_subdirectory(libs/irc/client/test)
+add_subdirectory(libs/irc/client/example)
+add_subdirectory(libs/irc/client/src)
 
 # Add project include dirs to installation.
 install(DIRECTORY cpp-dapps DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
