@@ -1,25 +1,25 @@
-include_directories(${CPP-DAPPS_SOURCE_DIR})
+include_directories(${cpp-dapps_SOURCE_DIR})
 
 file(
     GLOB_RECURSE
-    CPP-DAPPS_IRCLIB_CLIENT_HEADERS "${CPP-DAPPS_SOURCE_DIR}/dapps/irc/client/*.hpp"
+    cpp-dapps_IRCLIB_CLIENT_HEADERS "${cpp-dapps_SOURCE_DIR}/dapps/irc/client/*.hpp"
 )
 file(
     GLOB
-    CPP-DAPPS_IRCLIB_CLIENT_SRCS "*.cpp"
+    cpp-dapps_IRCLIB_CLIENT_SRCS "*.cpp"
 )
 
 add_library(
     cpp-dapps-irclib-client
-    ${CPP-DAPPS_IRCLIB_CLIENT_SRCS}
-    ${CPP-DAPPS_IRCLIB_CLIENT_HEADERS}
+    ${cpp-dapps_IRCLIB_CLIENT_SRCS}
+    ${cpp-dapps_IRCLIB_CLIENT_HEADERS}
 )
 
 set_target_properties(
     cpp-dapps-irclib-client
     PROPERTIES
-    VERSION ${CPP-DAPPS_VERSION_STRING}
-    PUBLIC_HEADER "${CPP-DAPPS_IRCLIB_CLIENT_HEADERS}"
+    VERSION ${cpp-dapps_VERSION_STRING}
+    PUBLIC_HEADER "${cpp-dapps_IRCLIB_CLIENT_HEADERS}"
     CXX_STANDARD 11
     CXX_STANDARD_REQUIRED ON
 )
@@ -36,4 +36,4 @@ install(
     COMPONENT dev
 )
 
-source_group("Header Files" FILES ${CPP-DAPPS_IRCLIB_CLIENT_HEADERS})
+source_group("Header Files" FILES ${cpp-dapps_IRCLIB_CLIENT_HEADERS})

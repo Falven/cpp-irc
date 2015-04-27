@@ -2,7 +2,7 @@
 #include <boost/spirit/include/classic.hpp>
 #include <boost/spirit/include/classic_push_back_actor.hpp>
 
-#include "dapps/irclib/client/irc_nickname.hpp"
+#include "dapps/irc/client/irc_nickname.hpp"
 
 using std::string;
 using boost::spirit::classic::parser;

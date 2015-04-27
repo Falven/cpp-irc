@@ -1,4 +1,4 @@
-include_directories(${CPP-DAPPS_SOURCE_DIR})
+include_directories(${cpp-dapps_SOURCE_DIR})
 
 set(
     TESTS

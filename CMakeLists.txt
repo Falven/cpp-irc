@@ -1,12 +1,12 @@
 cmake_minimum_required(VERSION 2.8)
-project(CPP-DAPPS)
+project(cpp-dapps)
 
-set(CPP-DAPPS_VERSION_MAJOR 0)
-set(CPP-DAPPS_VERSION_MINOR 1)
-set(CPP-DAPPS_VERSION_PATCH 0)
+set(cpp-dapps_VERSION_MAJOR 0)
+set(cpp-dapps_VERSION_MINOR 1)
+set(cpp-dapps_VERSION_PATCH 0)
 set(
-    CPP-DAPPS_VERSION_STRING
-    ${CPP-DAPPS_VERSION_MAJOR}.${CPP-DAPPS_VERSION_MINOR}.${CPP-DAPPS_VERSION_PATCH}
+    cpp-dapps_VERSION_STRING
+    ${cpp-dapps_VERSION_MAJOR}.${cpp-dapps_VERSION_MINOR}.${cpp-dapps_VERSION_PATCH}
 )
 
 include(GNUInstallDirs)
@@ -26,21 +26,52 @@ if(NOT IS_ABSOLUTE "${INSTALL_CMAKE_DIR}")
     set(INSTALL_CMAKE_DIR "${CMAKE_INSTALL_PREFIX}/${INSTALL_CMAKE_DIR}")
 endif()
 
-find_package(Boost 1.58.0 REQUIRED)
-# find_package(OpenSSL REQUIRED)
-# find_package(Threads)
+set(
+    CMAKE_BUILD_TYPE
+    "Debug"
+    CACHE STRING "Statically specifies what build type (configuration) will be built in this build tree. Possible values are empty, Debug, Release, RelWithDebInfo and MinSizeRel.."
+)
+set(
+    BUILD_SHARED_LIBS OFF
+    CACHE BOOL "Whether to build shared or static dapps libraries."
+)
+set(
+    Boost_DEBUG OFF
+    CACHE BOOL "Show boost debugging information."
+)
+set(
+    Boost_USE_STATIC_LIBS ON
+    CACHE BOOL "Whether to use shared or static boost libraries when building dapps."
+)
+# set(
+#     Boost_USE_STATIC_RUNTIME ON
+#     CACHE BOOL "Whether to link statically to the C++ standard library and compiler runtime support libraries."
+# )
+set(
+    Boost_USE_MULTITHREADED ON
+    CACHE BOOL "Whether to link to multi-threaded boost libraries when building dapps."
+)
 
-set(Boost_USE_MULTI_THREADED ON)
-# add_definitions(-DBOOST_NETWORK_ENABLE_HTTPS)
+find_package(
+    Boost 1.58.0
+    REQUIRED system timer chrono
+)
 
-if(BUILD_SHARED_LIBS)
-  message(STATUS "Dynamically linking boost testing libs.")
-  set(Boost_USE_STATIC_LIBS OFF)
-  add_definitions(-DBOOST_TEST_DYN_LINK)
-else()
-  set(Boost_USE_STATIC_LIBS ON)
-  set(BUILD_SHARED_LIBS OFF)
+# if(WIN32)
+#     add_definitions(-DBOOST_ALL_NO_LIB)
+# endif()
+
+if (NOT Boost_FOUND)
+    if(BUILD_SHARED_LIBS)
+        message("Check to make sure you have built shared boost libraries.")
+    else()
+        message("Check to make sure you have built static boost libraries.")
+    endif(BUILD_SHARED_LIBS)
 endif()
+
+# find_package(OpenSSL)
+# add_definitions(-DBOOST_NETWORK_ENABLE_HTTPS)
+find_package(Threads)
 
 if(CMAKE_BUILD_TYPE MATCHES Debug)
     set(CMAKE_VERBOSE_MAKEFILE true)

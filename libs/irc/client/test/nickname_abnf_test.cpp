@@ -1,7 +1,7 @@
 #include <boost/spirit/include/classic.hpp>
 #include <iostream>
 
-#include "dapps/irclib/client/irc_nickname.hpp"
+#include "dapps/irc/client/irc_nickname.hpp"
 
 using namespace boost::spirit::classic;
 using namespace boost;
