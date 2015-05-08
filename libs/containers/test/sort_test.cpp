@@ -1,65 +1,77 @@
 #include <vector>
 #include <cassert>
 #include <memory>
-#include <dapps\containers\sort.hpp>
+#include <functional>
+#include <cstdlib>
+#include <dapps/containers/sort.hpp>
 #include <boost/timer/timer.hpp>
 
+using std::cout;
+using std::endl;
+using std::string;
 using std::vector;
+using std::allocator;
+using std::less;
+using std::less_equal;
+using boost::timer::auto_cpu_timer;
+
+template<typename Func, typename Comp>
+static void sort_test_small_uniques(const string & name, Func sort, Comp comparator)
+{
+    vector<int> orig{ 1, 8, 4, 6, 5, 2, 0, 3 }, soln{ 0, 1, 2, 3, 4, 5, 6, 8 };
+    cout << "Testing " << name << " with small unique values.\n" << "Execution time:";
+    {
+        auto_cpu_timer t;
+        sort(orig.begin(), orig.end(), comparator);
+    }
+    assert(orig == soln);
+    cout << "Result: PASS\n" << endl;
+}
+
+template<typename Func, typename Comp>
+static void sort_test_small_duplicates(const string & name, Func sort, Comp comparator)
+{
+    vector<int> orig{ 1, 4, 6, 5, 2, 0, 3, 0 }, soln{ 0, 0, 1, 2, 3, 4, 5, 6 };
+    cout << "Testing " << name << " with duplicates.\n" << "Execution time:";
+    {
+        auto_cpu_timer t;
+        sort(orig.begin(), orig.end(), comparator);
+    }
+    assert(orig == soln);
+    cout << "Result: PASS\n" << endl;
+}
+
+template<typename Func, typename Comp>
+static void sort_test_large_uniques(const string & name, Func sort, Comp comparator)
+{
+    vector<int> orig{ 1, 8, 4, 6, 5, 2, 0, 3 }, soln{ 0, 1, 2, 3, 4, 5, 6, 8 };
+    cout << "Testing " << name << " with small unique values.\n" << "Execution time:";
+    {
+        auto_cpu_timer t;
+        sort(orig.begin(), orig.end(), comparator);
+    }
+    assert(orig == soln);
+    cout << "Result: PASS\n" << endl;
+}
+
+template<typename Func, typename Comp>
+static void sort_test(const string & name, Func sort, Comp comparator)
+{
+    sort_test_small_uniques(name, sort, comparator);
+    sort_test_small_duplicates(name, sort, comparator);
+}
 
 int main(int argc, const char * argv [])
 {
-	vector<int> orig{ 1, 4, 5, 3, 2 }, soln{ 1, 2, 3, 4, 5 }, orig_dup{ 1, 4, 5, 3, 1 }, soln_dup{ 1, 1, 3, 4, 5 }, arr, arr_dup;
+    using iterator = vector<int>::iterator;
 
-	std::cout << "Testing sort_selection: ";
-	// No duplicates
-	arr = orig;
-	sort_selection(arr.begin(), arr.end());
-	assert(arr == soln);
-	// Duplicates
-	arr_dup = orig_dup;
-	sort_selection(arr_dup.begin(), arr_dup.end());
-	assert(arr_dup == soln_dup);
-	std::cout << "PASS" << std::endl;
-
-	std::cout << "Testing sort_insertion: ";
-	// No duplicates
-	{
-		vector<int> large;
-		large.reserve(1000000);
-		for (int i = 1000000; i > 0; --i)
-		{
-			large.push_back(i);
-		}
-
-		boost::timer::auto_cpu_timer t;
-		sort_insertion(arr.begin(), arr.end());
-	}
-	//assert(arr == soln);
-	// Duplicates
-	//arr_dup = orig_dup;
-	//sort_insertion(arr_dup.begin(), arr_dup.end());
-	//assert(arr_dup == soln_dup);
-	//std::cout << "PASS" << std::endl;
-
-	std::cout << "Testing sort_merge: ";
-	// No duplicates
-	{
-		vector<int> large;
-		large.reserve(1000000);
-		for (int i = 1000000; i > 0; --i)
-		{
-			large.push_back(i);
-		}
-
-		boost::timer::auto_cpu_timer t;
-		sort_merge(arr.begin(), arr.end());
-	}
-	//assert(arr == soln);
-	//// Duplicates
-	//arr_dup = orig_dup;
-	//sort_merge(arr_dup.begin(), arr_dup.end());
-	//assert(arr_dup == soln_dup);
-	//std::cout << "PASS" << std::endl;
+    sort_test("sort_selection", &sort_selection<iterator, less<int>>, less<int>());
+    sort_test("sort_insertion", &sort_insertion<iterator, less<int>>, less<int>());
+    sort_test("std::_Insertion_sort", &std::_Insertion_sort<iterator, less<int>>, less<int>());
+    sort_test("sort_merge", &sort_merge<iterator, less<int>>, less<int>());
+    sort_test("std::stable_sort", &std::stable_sort<iterator, less<int>>, less<int>());
+    sort_test("sort_quick", &sort_quick<iterator, less_equal<int>>, less_equal<int>());
+    sort_test("std::sort", &std::sort<iterator, less<int>>, less<int>());
 
 	return 0;
 }
