@@ -1,0 +1,1 @@
+#include "dapps/irc/client/irc_service.hpp"

@@ -1,3 +1,5 @@
+#include <regex>
+
 #include "dapps/irc/client/irc_server.hpp"
 
 // servername =  hostname

@@ -13,7 +13,8 @@
 /// 
 /// While the maximum length is limited to nine characters, clients SHOULD
 /// accept longer strings as they may become used in future evolutions of the
-/// protocol. https://tools.ietf.org/html/rfc2812 TODO support unicode.
+/// protocol. https://tools.ietf.org/html/rfc2812 TODO support unicode. TODO
+/// channel types https://tools.ietf.org/html/rfc2812#page-5.
 /// </summary>
 ///
 /// <remarks>   Francisco, 4/20/2015. </remarks>
@@ -22,6 +23,8 @@ class irc_nickname
 {
 public:
 
+    typedef std::string::size_type size_type;
+
     ///////////////////////////////////////////////////////////////////////////
     /// <summary>
     /// Maximum number of characters that comprises a nickname. Note: this is not
@@ -29,7 +32,7 @@ public:
     /// https://tools.ietf.org/html/rfc2812#section-1.2.1.
     /// </summary>
     ///////////////////////////////////////////////////////////////////////////
-    static const unsigned int MAX_LENGTH = 9u;
+    static const size_type MAX_LENGTH = 9u;
 
     irc_nickname(const std::string & name)
         : nickname_(name)
@@ -42,6 +45,11 @@ public:
     static bool is_valid(const std::string & nickname)
     {
         return std::regex_match(nickname, nickname_regex_);
+    }
+
+    const std::string str() const
+    {
+        return nickname_;
     }
 
 private:
