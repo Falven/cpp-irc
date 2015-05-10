@@ -5,14 +5,21 @@ A fully [RFC2812](https://tools.ietf.org/html/rfc2812)-compliant IRC Client libr
 
 installation
 windows
-make sure boost is installed properly
 
-64 bit machine
-bootstrap
-.\b2 address-model=64
+make sure boost is installed properly.
+Download the latest version
+http://sourceforge.net/projects/boost/files/boost/1.58.0/
 
-32 bit machine
+Windows x64:
 bootstrap
-.\b2 address-model=32
+b2 link=static,shared address-model=64 threading=single,multi --stagedir=stage64
+
+Windows x32:
+bootstrap
+b2 link=static,shared address-model=32 threading=single,multi --stagedir=stage32
 
 set your cmake preferences
+
+make sure cpp-netlib 0.11.1+ is installed properly from:
+http://cpp-netlib.org/
+And not the development version on github.

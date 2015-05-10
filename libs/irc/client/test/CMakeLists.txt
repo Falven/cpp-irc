@@ -1,5 +1,5 @@
-include(${PROJECT_SOURCE_DIR}/cmake/GenerateTests.cmake)
+include(${PROJECT_SOURCE_DIR}/cmake/GenerateLibTests.cmake)
 
 include_directories(${cpp-dapps_SOURCE_DIR})
 
-generate_tests("cpp-dapps-irclib-client")
+generate_lib_tests("cpp-dapps-irclib" ${Boost_LIBRARIES})

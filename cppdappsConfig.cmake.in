@@ -1,23 +1,6 @@
-# - Config file for the dapps package
-# It defines the following variables
-#  DAPPS_INCLUDE_DIRS - include directories for dapps
-#  DAPPS_LIBRARIES    - libraries to link against
-#  DAPPS_EXECUTABLE   - the dapps executable
+set(cpp-dapps_VERSION ${cpp-dapps_VERSION_STRING})
 
-# Compute paths
-get_filename_component(DAPPS_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
-set(DAPPS_INCLUDE_DIRS "@CONF_INCLUDE_DIRS@")
+@PACKAGE_INIT@
 
-# Our library dependencies (contains definitions for IMPORTED targets)
-if(
-    NOT TARGET dapps-irclib-client
-    AND NOT DAPPS_BINARY_DIR)
-  include("${DAPPS_CMAKE_DIR}/dappsTargets.cmake")
-endif()
-
-# These are IMPORTED targets created by dappsTargets.cmake
-set(
-    DAPPS_LIBRARIES
-    dapps-irclib-client
-)
-# set(DAPPS_EXECUTABLE bar) # examples or tests?
+set_and_check(DAPPS_INCLUDE_DIRS "@PACKAGE_INCLUDE_INSTALL_DIR@")
+set_and_check(DAPPS_SYSCONFIG_DIR "@PACKAGE_SYSCONFIG_INSTALL_DIR@")
