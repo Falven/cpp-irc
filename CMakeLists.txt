@@ -75,18 +75,6 @@ if (NOT OPENSSL_FOUND)
 endif()
 add_definitions(-DBOOST_NETWORK_ENABLE_HTTPS)
 
-find_package(
-    cppnetlib 0.11.0
-    REQUIRED uri
-)
-if (NOT cppnetlib_FOUND)
-    if(BUILD_SHARED_LIBS)
-        message("Check to make sure you have built shared cpp-netlib libraries.")
-    else()
-        message("Check to make sure you have built static cpp-netlib libraries.")
-    endif(BUILD_SHARED_LIBS)
-endif()
-
 if(CMAKE_BUILD_TYPE MATCHES Debug)
     set(CMAKE_VERBOSE_MAKEFILE true)
     add_definitions(-DBOOST_NETWORK_DEBUG)
@@ -97,7 +85,6 @@ endif()
 
 include_directories(${Boost_INCLUDE_DIRS})
 include_directories(${OPENSSL_INCLUDE_DIR})
-include_directories(${CPPNETLIB_INCLUDE_DIRS})
 
 enable_testing()
 

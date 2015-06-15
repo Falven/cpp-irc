@@ -20,7 +20,6 @@ target_link_libraries(
     cpp-dapps-irclib INTERFACE
     ${Boost_System_LIBRARY}
     ${OPENSSL_LIBRARIES}
-    ${cppnetlib_LIBRARIES}
 )
 
 add_custom_target(
