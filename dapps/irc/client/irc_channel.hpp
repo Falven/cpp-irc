@@ -33,7 +33,7 @@ public:
         if (!irc_channel::is_valid(name))
             throw std::invalid_argument("The provided name does not "
             "conform to channel name requirements.");
-    };
+    }
 
     static bool is_valid(const std::string & name)
     {

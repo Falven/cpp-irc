@@ -79,4 +79,4 @@ private:
 // equivalence of two nicknames or channel names.
 const std::regex irc_nickname::nickname_regex_(R"([A-Za-z\x5B-\x60\x7B-\x7D][A-Za-z\x5B-\x60\x7B-\x7D0-9\-]*)");
 
-#endif IRC_NICKNAME_H
+#endif

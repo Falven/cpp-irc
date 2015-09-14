@@ -72,7 +72,7 @@ static void divide_and_merge_range(BidirIt first, BidirIt last, BidirIt buffer, 
 
         auto out = first;
         while (left_begin != left_end || right_begin != right_end)
-            *out++ = std::move(right_begin == right_end || left_begin != left_end && cmp(*left_begin, *right_begin) ? *left_begin++ : *right_begin++);
+            *out++ = std::move(right_begin == right_end || (left_begin != left_end && cmp(*left_begin, *right_begin)) ? *left_begin++ : *right_begin++);
     }
 }
 
