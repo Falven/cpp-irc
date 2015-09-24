@@ -1,6 +1,6 @@
 include_directories(${cpp-dapps_SOURCE_DIR})
 
-file(GLOB_RECURSE cpp-dapps_IRCLIB_CLIENT_HEADERS "${cpp-dapps_SOURCE_DIR}/dapps/irc/client/*.hpp")
+file(GLOB_RECURSE cpp-dapps_IRCLIB_CLIENT_HEADERS "${cpp-dapps_SOURCE_DIR}/dapps/irc/*.hpp")
 
 add_library(cpp-dapps-irclib INTERFACE)
 

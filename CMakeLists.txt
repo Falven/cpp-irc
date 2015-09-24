@@ -1,3 +1,5 @@
+include(cmake/PreventInSourceBuilds.cmake)
+
 cmake_minimum_required(VERSION 3.2)
 
 project(cpp-dapps)
@@ -47,8 +49,8 @@ include_directories(${OPENSSL_INCLUDE_DIR})
 
 enable_testing()
 
-add_subdirectory(libs/irc/client/src)
-add_subdirectory(libs/irc/client/test)
+add_subdirectory(libs/irc/src)
+add_subdirectory(libs/irc/test)
 add_subdirectory(libs/containers/src)
 add_subdirectory(libs/containers/test)
 
