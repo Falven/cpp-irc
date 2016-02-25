@@ -17,17 +17,11 @@ namespace dapps
         {
         public:
             explicit irc_exception(const std::string & message)
-                : std::runtime_error(message.c_str())
+                : runtime_error(message.c_str())
             {}
 
-            explicit irc_exception(const char * message)
-                : std::runtime_error(message)
-            {}
-
-            virtual const char * what() const throw()
-            {
-                return ((std::runtime_error *)this)->what();
-            }
+        private:
+            const std::string error_message;
         };
     }
 }

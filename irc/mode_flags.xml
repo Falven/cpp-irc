@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modes>
+	<mode>
+		<flag>a</flag>
+		<description>user is flagged as away.</description>
+	</mode>
+	<mode>
+		<flag>i</flag>
+		<description>marks a users as invisible.</description>
+	</mode>
+	<mode>
+		<flag>w</flag>
+		<description>user receives wallops.</description>
+	</mode>
+	<mode>
+		<flag>r</flag>
+		<description>restricted user connection.</description>
+	</mode>
+	<mode>
+		<flag>o</flag>
+		<description>operator flag.</description>
+	</mode>
+	<mode>
+		<flag>O</flag>
+		<description>local operator flag.</description>
+	</mode>
+	<mode>
+		<flag>s</flag>
+		<description>marks a user for receipt of server notices.</description>
+	</mode>
+</modes>

@@ -1,13 +1,10 @@
-include_directories(${cpp-dapps_SOURCE_DIR})
+include_directories(${cpp-irc_SOURCE_DIR})
 
-file(GLOB_RECURSE cpp-dapps_IRCLIB_CLIENT_HEADERS "${cpp-dapps_SOURCE_DIR}/dapps/irc/*.hpp")
+file(GLOB_RECURSE cpp-irclib_CLIENT_HEADERS "${cpp-irc_SOURCE_DIR}/irc/*.hpp")
+install(FILES ${cpp-irclib_CLIENT_HEADERS} DESTINATION include)
 
-add_library(cpp-dapps-irclib INTERFACE)
+add_library(cpp-irclib INTERFACE)
+target_sources(cpp-irclib INTERFACE ${cpp-irclib_CLIENT_HEADERS})
+target_link_libraries(cpp-irclib INTERFACE ${Boost_LIBRARIES})
 
-target_include_directories(cpp-dapps-irclib INTERFACE)
-
-target_sources(cpp-dapps-irclib INTERFACE ${cpp-dapps_IRCLIB_CLIENT_HEADERS})
-
-target_link_libraries(cpp-dapps-irclib INTERFACE ${Boost_System_LIBRARY} ${OPENSSL_LIBRARIES})
-
-add_custom_target(cpp-dapps-irclib-src SOURCES ${cpp-dapps_IRCLIB_CLIENT_HEADERS})
+add_custom_target(cpp-irclib-src SOURCES ${cpp-irclib_CLIENT_HEADERS})

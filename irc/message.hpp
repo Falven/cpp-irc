@@ -2,10 +2,8 @@
 #define MESSAGE_H
 
 #include <string>
-#include <regex>
 #include <stdexcept>
-
-#include "nickname.hpp"
+#include <strstream>
 
 namespace dapps
 {
@@ -89,28 +87,41 @@ namespace dapps
             // SPACE = %x20; space character
             // crlf = %x0D %x0A; "carriage return" "linefeed"
 
-            typedef uint16_t size_type;
-
             ///////////////////////////////////////////////////////////////////////////
             /// <summary>
             /// messages SHALL NOT exceed 512 characters in length, counting all
             /// characters including the trailing CR - LF.
             /// </summary>
             ///////////////////////////////////////////////////////////////////////////
-            static const size_type MAX_SIZE = 512u;
+            static const uint16_t MAX_SIZE = 512u;
+            static const char DELIMITER = 0x20;
+            static const std::string TERMINATION;
 
-            message(const std::string command, const std::string & parameters)
-                : command_(command), parameters_(parameters)
+            message(const std::string & message_str)
+            : message_str_(message_str)
             {
+                if(message_str_.length() > message::MAX_SIZE)
+                {
+                    throw std::invalid_argument("The given message length exceeds the max allowable size for an irc message.");
+                }
             }
 
-        protected:
+            const std::string str() const
+            {
+                return message_str_;
+            }
 
-            const std::string command_;
-
-            const std::string parameters_;
+        private:
+            const std::string message_str_;
         };
+
+        const std::string message::TERMINATION = "\r\n";
     }
+}
+
+std::ostream & operator<< (std::ostream & os, const dapps::irc::message & msg)
+{
+    return (os << msg.str());
 }
 
 #endif

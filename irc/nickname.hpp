@@ -26,9 +26,6 @@ namespace dapps
         class nickname
         {
         public:
-
-            typedef std::string::size_type size_type;
-
             ///////////////////////////////////////////////////////////////////////////
             /// <summary>
             /// Maximum number of characters that comprises a nickname. Note: this is not
@@ -36,10 +33,10 @@ namespace dapps
             /// https://tools.ietf.org/html/rfc2812#section-1.2.1.
             /// </summary>
             ///////////////////////////////////////////////////////////////////////////
-            static const size_type MAX_LENGTH = 9u;
+            static const std::string::size_type MAX_LENGTH = 9u;
 
             nickname(const std::string & name)
-                : nickname_(name)
+            : nickname_(name)
             {
                 if (!nickname::is_valid(name))
                     throw std::invalid_argument("The provided name does not "
@@ -57,7 +54,6 @@ namespace dapps
             }
 
         private:
-
             /// <summary> Regex used to validate proper nickname input. </summary>
             static const std::regex nickname_regex_;
 
