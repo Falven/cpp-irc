@@ -15,11 +15,11 @@ namespace dapps
         class request : public message
         {
         public:
-            request(const std::string & command, const std::initializer_list<std::string> && parameters)
-            : message(parse_request()),
-              command_(command),
-              parameters_(parameters.begin(), parameters.end())
-              
+            request(const std::string & command,
+				const std::initializer_list<std::string> && parameters)
+				: message(parse_request()),
+				command_(command),
+				parameters_(parameters.begin(), parameters.end())
             {}
 
             const std::string command() const

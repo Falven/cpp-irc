@@ -26,17 +26,15 @@ namespace dapps
         class channel
         {
         public:
-
             typedef std::string::size_type size_type;
-
             static const size_type MAX_SIZE = 50u;
 
             channel(const std::string & name)
                 : name_(name)
             {
-                if (!irc_channel::is_valid(name))
+                if (!channel::is_valid(name))
                     throw std::invalid_argument("The provided name does not "
-                    "conform to channel name requirements.");
+                    "conform to irc channel name requirements.");
             }
 
             static bool is_valid(const std::string & name)
@@ -45,9 +43,7 @@ namespace dapps
             }
 
         private:
-
             static const std::regex name_regex_;
-
             const std::string name_;
         };
 

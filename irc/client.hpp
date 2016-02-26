@@ -11,6 +11,8 @@
 #include "request.hpp"
 #include "reply.hpp"
 #include "username.hpp"
+#include "modes.hpp"
+#include "channel.hpp"
 
 namespace dapps
 {
@@ -19,62 +21,42 @@ namespace dapps
 		class client
 		{
 		public:
-			client(boost::asio::io_service & ios, const boost::asio::ip::tcp::resolver::iterator & endpoint_iterator)
+			client(boost::asio::io_service & ios,
+				const boost::asio::ip::tcp::resolver::iterator & endpoint_iterator,
+				const std::string & pass,
+				const username & user,
+				const std::string & mode_str)
 				: io_service_(ios),
 				endpoint_iterator_(endpoint_iterator),
 				socket_(ios),
-				strand_(ios),
 				request_queue_(),
 				reply_queue_(),
 				request_buffer_(),
-				reply_buffer_()
-			{}
+				reply_buffer_(),
+				modes_(mode_str)
+			{
+				connect(pass, user);
+			}
+
+			client(boost::asio::io_service & ios,
+				const boost::asio::ip::tcp::resolver::iterator & endpoint_iterator,
+				const std::string & pass,
+				const username & user)
+				: io_service_(ios),
+				endpoint_iterator_(endpoint_iterator),
+				socket_(ios),
+				request_queue_(),
+				reply_queue_(),
+				request_buffer_(),
+				reply_buffer_(),
+				modes_()
+			{
+				connect(pass, user);
+			}
 
 			~client()
 			{
 				socket_.close();
-			}
-
-			///////////////////////////////////////////////////////////////////////////
-			/// <summary>
-			/// The commands described here are used to register a connection with an IRC
-			/// server as a user as well as to correctly disconnect.
-			///
-			/// A "PASS" command is not required for a client connection to be registered,
-			/// but it MUST precede the latter of the NICK / USER combination(for a user
-			/// connection) or the SERVICE command(for a service connection).The
-			/// RECOMMENDED order for a client to register is as follows :
-			///
-			///                 1. Pass message
-			/// 2. Nick message                 2. Service message
-			/// 3. User message
-			///
-			/// Upon success, the client will receive an RPL_WELCOME(for users) or
-			/// RPL_YOURESERVICE(for services) message indicating that the connection is
-			/// now registered and known the to the entire IRC network. The reply message
-			/// MUST contain the full client identifier upon which it was registered.
-			/// </summary>
-			///
-			/// <remarks>   Francisco, 5/8/2015. </remarks>
-			///
-			/// <param name="pass"> The pass to connect. Optional. </param>
-			///
-			/// <returns>   An reply. </returns>
-			///////////////////////////////////////////////////////////////////////////
-			void connect(const std::string & pass, const username & user)
-			{
-				boost::asio::async_connect(socket_, endpoint_iterator_,
-					[this, &pass, &user](boost::system::error_code error, boost::asio::ip::tcp::resolver::iterator)
-				{
-					if (error)
-					{
-						throw irc_exception("Connect failed: " + error.message());
-					}
-
-					message_password(pass);
-					message_nickname(user.get_nickname());
-					message_user(user);
-				});
 			}
 
 			///////////////////////////////////////////////////////////////////////////////
@@ -98,10 +80,7 @@ namespace dapps
 			///////////////////////////////////////////////////////////////////////////////
 			void message_password(const std::string & password)
 			{
-				// Password requirement checks could go here.
-				// Could load a new/different command from file here.
-				request pass_msg("PASS", { password });
-				send_request(pass_msg);
+				request_queue_.push_back(request("PASS", { password }));
 			}
 
 			///////////////////////////////////////////////////////////////////////////////
@@ -129,8 +108,7 @@ namespace dapps
 			///////////////////////////////////////////////////////////////////////////////
 			void message_nickname(const nickname & nick)
 			{
-				request nick_msg("NICK", { nick.str() });
-				send_request(nick.str());
+				request_queue_.push_back(request("NICK", { nick.str() }));
 			}
 
 			///////////////////////////////////////////////////////////////////////////////
@@ -166,8 +144,7 @@ namespace dapps
 			///////////////////////////////////////////////////////////////////////////////
 			void message_user(const username & user)
 			{
-				request user_msg("USER", { user.str() });
-				send_request(user_msg);
+				request_queue_.push_back(request("USER", { user.str() }));
 			}
 
 			///////////////////////////////////////////////////////////////////////////////
@@ -192,8 +169,10 @@ namespace dapps
 			///
 			/// <remarks>   Francisco, 5/8/2015. </remarks>
 			///////////////////////////////////////////////////////////////////////////////
-			void message_oper()
+			void message_oper(const username & user, const std::string & password)
 			{
+				// Upon success, the user will receive a MODE message(see section 3.1.5) indicating the new user modes.
+				request_queue_.push_back(request("OPER", { user.get_nickname().str(), password }));
 			}
 
 			///////////////////////////////////////////////////////////////////////////////
@@ -257,8 +236,10 @@ namespace dapps
 			///
 			/// <remarks>   Francisco, 5/8/2015. </remarks>
 			///////////////////////////////////////////////////////////////////////////////
-			void message_user_mode()
+			void message_user_mode(const nickname & nick, const std::string mode_str)
 			{
+				// TODO
+				request_queue_.push_back(request("MODE", { nick.str(), mode_str }));
 			}
 
 			///////////////////////////////////////////////////////////////////////////////
@@ -293,8 +274,18 @@ namespace dapps
 			///
 			/// <remarks>   Francisco, 5/8/2015. </remarks>
 			///////////////////////////////////////////////////////////////////////////////
-			void message_service()
+			void message_service(const nickname & nick, const std::string & distribution, const std::string & info)
 			{
+				// TODO
+				request_queue_.push_back(request("SERVICE",
+				{
+					nick.str(),
+					"*",
+					distribution,
+					"0",
+					"0",
+					info
+				}));
 			}
 
 			///////////////////////////////////////////////////////////////////////////////
@@ -318,8 +309,9 @@ namespace dapps
 			///
 			/// <remarks>   Francisco, 5/8/2015. </remarks>
 			///////////////////////////////////////////////////////////////////////////////
-			void message_quit()
+			void message_quit(const std::string & quit_msg)
 			{
+				request_queue_.push_back(request("QUIT", { quit_msg }));
 			}
 
 			///////////////////////////////////////////////////////////////////////////////
@@ -356,8 +348,9 @@ namespace dapps
 			///
 			/// <remarks>   Francisco, 5/8/2015. </remarks>
 			///////////////////////////////////////////////////////////////////////////////
-			void message_squit()
+			void message_squit(const std::string & server, const std::string & comment)
 			{
+				request_queue_.push_back(request("SQUIT", { server, comment }));
 			}
 
 			///////////////////////////////////////////////////////////////////////////////
@@ -1760,25 +1753,25 @@ namespace dapps
 			{
 			}
 
+			modes & get_modes()
+			{
+				return modes_;
+			}
+
 		private:
 			const boost::asio::io_service & io_service_;
-
-			const boost::asio::ip::tcp::resolver::iterator & endpoint_iterator_;
-
+			const boost::asio::ip::tcp::resolver::iterator endpoint_iterator_;
 			boost::asio::ip::tcp::socket socket_;
-
-			boost::asio::io_service::strand strand_;
-
 			std::deque< const request > request_queue_;
-
 			std::deque< const reply > reply_queue_;
-
 			boost::asio::streambuf reply_buffer_;
-
 			boost::asio::streambuf request_buffer_;
+			dapps::irc::modes modes_;
+			std::vector<channel> channels_;
 
-			void send_request(const message & msg)
+			void chain_request(const message & msg)
 			{
+
 				boost::asio::async_write(socket_, boost::asio::buffer(msg.str(), msg.str().length()),
 					[this](const boost::system::error_code & error, std::size_t)
 				{
@@ -1789,7 +1782,7 @@ namespace dapps
 				});
 			}
 
-			void receive_reply()
+			void chain_reply()
 			{
 				boost::asio::async_read_until(socket_, reply_buffer_, message::TERMINATION,
 					[this](const boost::system::error_code & error, std::size_t)
@@ -1803,18 +1796,47 @@ namespace dapps
 					receive_reply();
 				});
 			}
+
+			///////////////////////////////////////////////////////////////////////////
+			/// <summary>
+			/// The commands described here are used to register a connection with an IRC
+			/// server as a user as well as to correctly disconnect.
+			///
+			/// A "PASS" command is not required for a client connection to be registered,
+			/// but it MUST precede the latter of the NICK / USER combination(for a user
+			/// connection) or the SERVICE command(for a service connection).The
+			/// RECOMMENDED order for a client to register is as follows :
+			///
+			///                 1. Pass message
+			/// 2. Nick message                 2. Service message
+			/// 3. User message
+			///
+			/// Upon success, the client will receive an RPL_WELCOME(for users) or
+			/// RPL_YOURESERVICE(for services) message indicating that the connection is
+			/// now registered and known the to the entire IRC network. The reply message
+			/// MUST contain the full client identifier upon which it was registered.
+			/// </summary>
+			///
+			/// <remarks>   Francisco, 5/8/2015. </remarks>
+			///
+			/// <param name="pass"> The pass to connect. Optional. </param>
+			///
+			/// <returns>   An reply. </returns>
+			///////////////////////////////////////////////////////////////////////////
+			void connect(const std::string & pass, const username & user)
+			{
+				boost::asio::async_connect(socket_, endpoint_iterator_,
+					[this, &pass, &user](boost::system::error_code error, boost::asio::ip::tcp::resolver::iterator)
+				{
+					if (error)
+					{
+						throw irc_exception("Connect failed: " + error.message());
+					}
+
+				});
+			}
 		};
 	}
 }
 
 #endif
-
-
-
-
-
-
-
-
-
-

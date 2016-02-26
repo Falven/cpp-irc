@@ -8,6 +8,7 @@
 #include "nickname.hpp"
 #include "message.hpp"
 #include "reply.hpp"
+#include "modes.hpp"
 
 namespace dapps
 {
@@ -16,9 +17,11 @@ namespace dapps
         class username
         {
         public:
-            username(const nickname & nick, const std::string real_name)
-            : nickname_(nick),
-              real_name_(real_name)
+            username(const nickname & nick,
+				const std::string real_name)
+            :
+				nickname_(nick),
+				real_name_(real_name)
             {}
 
             const nickname get_nickname() const
@@ -26,10 +29,10 @@ namespace dapps
                 return nickname_;
             }
 
-            const std::string str() const
-            {
-                return "";
-            }
+			const std::string get_real_name()
+			{
+				return real_name_;
+			}
 
         private:
             const nickname nickname_;

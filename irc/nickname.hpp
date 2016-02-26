@@ -56,7 +56,6 @@ namespace dapps
         private:
             /// <summary> Regex used to validate proper nickname input. </summary>
             static const std::regex nickname_regex_;
-
             /// <summary> The nickname string. </summary>
             const std::string nickname_;
         };
