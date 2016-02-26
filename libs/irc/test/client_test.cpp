@@ -10,15 +10,14 @@ int main(int argc, const char * argv[])
 {
 	try
 	{
-	    boost::asio::io_service io_service;
-	    boost::asio::ip::tcp::resolver resolver(io_service);
-	    boost::asio::ip::tcp::resolver::query query("irc.twitch.tv", "6667");
-	    boost::asio::ip::tcp::resolver::iterator iterator = resolver.resolve(query);
+		dapps::irc::nickname nick("ddtMaximilian");
+	    dapps::irc::username user(nick, "");
+		dapps::irc::client client("irc.twitch.tv", "6667");
 
-	    dapps::irc::username user(dapps::irc::nickname("ddtMaximilian"), "");
-		dapps::irc::client client(io_service, iterator, "oauth:uwsugc3p0du632si3rmk4jcof0eh5e", user);
-
-	    io_service.run();
+		client.message_password("somepass");
+		client.message_nickname(dapps::irc::nickname("ddtMaximilian"));
+		client.message_user(user);
+		client.connect();
 	}
 	catch (std::exception & e)
 	{
