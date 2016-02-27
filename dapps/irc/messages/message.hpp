@@ -1,9 +1,9 @@
-#ifndef MESSAGE_H
-#define MESSAGE_H
+#ifndef MESSAGE_HPP
+#define MESSAGE_HPP
 
 #include <string>
 #include <stdexcept>
-#include <strstream>
+#include <ostream>
 
 namespace dapps
 {
@@ -102,7 +102,8 @@ namespace dapps
             {
                 if(message_str_.length() > message::MAX_SIZE)
                 {
-                    throw std::invalid_argument("The given message length exceeds the max allowable size for an irc message.");
+                    throw std::invalid_argument("The provided message exceeds"
+						"the max allowable IRC message size.");
                 }
             }
 

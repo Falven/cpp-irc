@@ -2,7 +2,7 @@
 #include <string>
 #include <cassert>
 
-#include "irc\nickname.hpp"
+#include "dapps/irc/nickname.hpp"
 
 using std::string;
 using std::cout;

@@ -41,8 +41,8 @@ endif(CMAKE_BUILD_TYPE MATCHES Debug)
 
 enable_testing()
 
-add_subdirectory(libs/irc/src)
-add_subdirectory(libs/irc/test)
+add_subdirectory(libs/dapps/irc/src)
+add_subdirectory(libs/dapps/irc/test)
 
 include(InstallRequiredSystemLibraries)
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/License.txt")

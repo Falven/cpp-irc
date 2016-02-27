@@ -5,6 +5,8 @@
 #include <regex>
 #include <stdexcept>
 
+#include "messages/nick_request.hpp"
+
 namespace dapps
 {
     namespace irc
@@ -52,6 +54,11 @@ namespace dapps
             {
                 return nickname_;
             }
+
+			operator nick_request()
+			{
+				return nick_request(*this);
+			}
 
         private:
             /// <summary> Regex used to validate proper nickname input. </summary>

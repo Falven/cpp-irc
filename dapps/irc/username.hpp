@@ -1,14 +1,14 @@
-#ifndef USERNAME_H
-#define USERNAME_H
+#ifndef USERNAME_HPP
+#define USERNAME_HPP
 
 #include <string>
 #include <regex>
 #include <stdexcept>
 
 #include "nickname.hpp"
-#include "message.hpp"
-#include "reply.hpp"
-#include "modes.hpp"
+#include "messages/message.hpp"
+#include "messages/reply.hpp"
+#include "messages/user_request.hpp"
 
 namespace dapps
 {
@@ -17,10 +17,8 @@ namespace dapps
         class username
         {
         public:
-            username(const nickname & nick,
-				const std::string real_name)
-            :
-				nickname_(nick),
+            username(const nickname & nick, const std::string real_name)
+				: nickname_(nick),
 				real_name_(real_name)
             {}
 
@@ -29,14 +27,13 @@ namespace dapps
                 return nickname_;
             }
 
-			const std::string get_real_name()
+			const std::string get_real_name() const
 			{
 				return real_name_;
 			}
 
         private:
             const nickname nickname_;
-            static const char unused_ = '*';
             const std::string real_name_;
         };
     }

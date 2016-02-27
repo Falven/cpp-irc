@@ -1,5 +1,5 @@
-#ifndef MODE_H
-#define MODE_H
+#ifndef MODE_STATE_H
+#define MODE_STATE_H
 
 #include <sstream>
 #include <stdexcept>
@@ -8,7 +8,7 @@ namespace dapps
 {
 	namespace irc
 	{
-		class modes
+		class mode_state
 		{
 		public:
 			static const char ENABLE = '+';
@@ -21,13 +21,12 @@ namespace dapps
 			static const char LOCALOP = 'O';
 			static const char RECEIPT = 's';
 
-			modes(const std::string & mode_str)
-				: modes()
+			mode_state(const std::string & mode_str)
 			{
 				parse_string(mode_str);
 			}
 
-			modes(const bool & is_away,
+			mode_state(const bool & is_away,
 				const bool & is_invisible,
 				const bool & receives_wallops,
 				const bool & restricted_connection,
@@ -44,8 +43,8 @@ namespace dapps
 			  receives_server_notices_(receives_server_notices)
 			{}
 
-			modes()
-				: modes(false, false, false, false, false, false, false)
+			mode_state()
+				: mode_state(false, false, false, false, false, false, false)
 			{}
 
 			bool get_away()
