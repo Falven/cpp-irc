@@ -15,7 +15,7 @@ int main(int argc, const char * argv[])
 	try
 	{
 		dapps::irc::client client("verne.freenode.net", "6667");
-		client.send(dapps::irc::pass_request("oauth:uvger1uozh0lo1ou477kq0wkr067vd"));
+		client.send(dapps::irc::pass_request("somepass"));
 		dapps::irc::nickname nick("falven2000");
 		client.send(dapps::irc::nick_request(nick));
 		client.send(dapps::irc::user_request(dapps::irc::username(nick, "Frank."), dapps::irc::user_mode(false, false)));
