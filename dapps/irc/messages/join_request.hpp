@@ -1,3 +1,9 @@
+#ifndef JOIN_REQUEST_HPP
+#define JOIN_REQUEST_HPP
+
+#include <string>
+#include "request.hpp"
+
 namespace dapps
 {
 	namespace irc
@@ -64,9 +70,17 @@ namespace dapps
 		///
 		/// <remarks>   Francisco, 5/8/2015. </remarks>
 		///////////////////////////////////////////////////////////////////////////////
-		class join_request
+		class join_request : public request
 		{
+		public:
+			join_request(const std::string & channel)
+				: request(COMMAND, { channel }) {}
 
+			static const std::string COMMAND;
 		};
+
+		const std::string join_request::COMMAND("JOIN");
 	}
 }
+
+#endif

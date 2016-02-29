@@ -1,9 +1,9 @@
-#ifndef NICK_REQUEST_H
-#define NICK_REQUEST_H
+#ifndef NICK_REQUEST_HPP
+#define NICK_REQUEST_HPP
 
 #include <string>
 #include "request.hpp"
-#include "..\nickname.hpp"
+#include "../nickname.hpp"
 
 namespace dapps
 {

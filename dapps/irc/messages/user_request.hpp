@@ -3,8 +3,7 @@
 
 #include <string>
 #include "request.hpp"
-#include "..\username.hpp"
-#include "..\user_mode.hpp"
+#include "../user_mode.hpp"
 
 namespace dapps
 {
@@ -44,8 +43,8 @@ namespace dapps
 		class user_request : public request
 		{
 		public:
-			user_request(const username & user, const user_mode & mode)
-				: request(COMMAND, { user.get_nickname().str(), std::to_string(mode.get_mask()), UNUSED, user.get_real_name() }) {}
+			user_request(const std::string & username, const user_mode & mode, const std::string & realname)
+				: request(COMMAND, { username, std::to_string(mode.get_mask()), UNUSED, realname }) {}
 
 			static const std::string COMMAND;
 			static const std::string UNUSED;

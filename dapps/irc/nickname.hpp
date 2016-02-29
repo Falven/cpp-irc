@@ -1,11 +1,9 @@
-#ifndef NICKNAME_H
-#define NICKNAME_H
+#ifndef NICKNAME_HPP
+#define NICKNAME_HPP
 
 #include <string>
 #include <regex>
 #include <stdexcept>
-
-#include "messages/nick_request.hpp"
 
 namespace dapps
 {
@@ -54,11 +52,6 @@ namespace dapps
             {
                 return nickname_;
             }
-
-			operator nick_request()
-			{
-				return nick_request(*this);
-			}
 
         private:
             /// <summary> Regex used to validate proper nickname input. </summary>
