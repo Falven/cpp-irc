@@ -15,19 +15,18 @@ int main(int argc, const char * argv[])
 	try
 	{
 		boost::asio::io_service io_service;
+
 		boost::asio::ip::tcp::resolver resolver(io_service);
 		auto endpoint_iterator = resolver.resolve({ "irc.deltaanime.net", "6667" });
 		dapps::irc::client client(io_service, endpoint_iterator);
 
+		client.connect();
+		client.login("PASS \r\n", "NICK falven2000\r\n", "USER falven2000 8 * :falven2000\r\n");
+
 		std::thread io_thread([&io_service]() { io_service.run(); });
 
-		client.send(dapps::irc::pass_request(""));
-		client.send(dapps::irc::nick_request(dapps::irc::nickname("falven2000")));
-		client.send(dapps::irc::user_request("falven2000", dapps::irc::user_mode(false, false), "somerealname"));
-		client.send(dapps::irc::join_request("#dapps"));
-
-		char line[5];
-		std::cin.getline(line, 5);
+		std::string in;
+		std::cin >> in;
 
 		client.close();
 		io_thread.join();

@@ -1,3 +1,9 @@
+#ifndef PONG_REQUEST_HPP
+#define PONG_REQUEST_HPP
+
+#include <string>
+#include "request.hpp"
+
 namespace dapps
 {
 	namespace irc
@@ -22,9 +28,34 @@ namespace dapps
 		///
 		/// <remarks>   Francisco, 5/8/2015. </remarks>
 		///////////////////////////////////////////////////////////////////////////////
-		class pong_request
+		class pong_request : public request
 		{
+		public:
+			static const std::string COMMAND;
 
+			pong_request(const std::initializer_list<std::string> && servers)
+				: request(COMMAND, { parse_servers(servers) })
+			{
+			}
+
+		private:
+			std::string parse_servers(const std::initializer_list<std::string> & servers)
+			{
+				std::string servers_str;
+				auto it = servers.begin();
+				servers_str += *it++;
+				while (it != servers.end())
+				{
+					servers_str += "[";
+					servers_str += *it++;
+					servers_str += "]";
+				}
+				return servers_str;
+			}
 		};
+
+		const std::string pong_request::COMMAND("PONG");
 	}
 }
+
+#endif

@@ -1,0 +1,87 @@
+#include <iostream>
+#include <string>
+#include <boost/system/error_code.hpp>
+
+int main(int argc, const char * argv[])
+{
+	std::cout << "success = " << boost::system::errc::errc_t::success << std::endl;
+	std::cout << "address_family_not_supported = " << boost::system::errc::errc_t::address_family_not_supported << std::endl;
+	std::cout << "address_in_use = " << boost::system::errc::errc_t::address_in_use << std::endl;
+	std::cout << "address_not_available = " << boost::system::errc::errc_t::address_not_available << std::endl;
+	std::cout << "already_connected = " << boost::system::errc::errc_t::already_connected << std::endl;
+	std::cout << "argument_list_too_long = " << boost::system::errc::errc_t::argument_list_too_long << std::endl;
+	std::cout << "argument_out_of_domain = " << boost::system::errc::errc_t::argument_out_of_domain << std::endl;
+	std::cout << "bad_address = " << boost::system::errc::errc_t::bad_address << std::endl;
+	std::cout << "bad_file_descriptor = " << boost::system::errc::errc_t::bad_file_descriptor << std::endl;
+	std::cout << "bad_message = " << boost::system::errc::errc_t::bad_message << std::endl;
+	std::cout << "broken_pipe = " << boost::system::errc::errc_t::broken_pipe << std::endl;
+	std::cout << "connection_aborted = " << boost::system::errc::errc_t::connection_aborted << std::endl;
+	std::cout << "connection_already_in_progress = " << boost::system::errc::errc_t::connection_already_in_progress << std::endl;
+	std::cout << "connection_refused = " << boost::system::errc::errc_t::connection_refused << std::endl;
+	std::cout << "connection_reset = " << boost::system::errc::errc_t::connection_reset << std::endl;
+	std::cout << "cross_device_link = " << boost::system::errc::errc_t::cross_device_link << std::endl;
+	std::cout << "destination_address_required = " << boost::system::errc::errc_t::destination_address_required << std::endl;
+	std::cout << "device_or_resource_busy = " << boost::system::errc::errc_t::device_or_resource_busy << std::endl;
+	std::cout << "directory_not_empty = " << boost::system::errc::errc_t::directory_not_empty << std::endl;
+	std::cout << "executable_format_error = " << boost::system::errc::errc_t::executable_format_error << std::endl;
+	std::cout << "file_exists = " << boost::system::errc::errc_t::file_exists << std::endl;
+	std::cout << "file_too_large = " << boost::system::errc::errc_t::file_too_large << std::endl;
+	std::cout << "filename_too_long = " << boost::system::errc::errc_t::filename_too_long << std::endl;
+	std::cout << "function_not_supported = " << boost::system::errc::errc_t::function_not_supported << std::endl;
+	std::cout << "host_unreachable = " << boost::system::errc::errc_t::host_unreachable << std::endl;
+	std::cout << "identifier_removed = " << boost::system::errc::errc_t::identifier_removed << std::endl;
+	std::cout << "illegal_byte_sequence = " << boost::system::errc::errc_t::illegal_byte_sequence << std::endl;
+	std::cout << "inappropriate_io_control_operation = " << boost::system::errc::errc_t::inappropriate_io_control_operation << std::endl;
+	std::cout << "interrupted = " << boost::system::errc::errc_t::interrupted << std::endl;
+	std::cout << "invalid_argument = " << boost::system::errc::errc_t::invalid_argument << std::endl;
+	std::cout << "invalid_seek = " << boost::system::errc::errc_t::invalid_seek << std::endl;
+	std::cout << "io_error = " << boost::system::errc::errc_t::io_error << std::endl;
+	std::cout << "is_a_directory = " << boost::system::errc::errc_t::is_a_directory << std::endl;
+	std::cout << "message_size = " << boost::system::errc::errc_t::message_size << std::endl;
+	std::cout << "network_down = " << boost::system::errc::errc_t::network_down << std::endl;
+	std::cout << "network_reset = " << boost::system::errc::errc_t::network_reset << std::endl;
+	std::cout << "network_unreachable = " << boost::system::errc::errc_t::network_unreachable << std::endl;
+	std::cout << "no_buffer_space = " << boost::system::errc::errc_t::no_buffer_space << std::endl;
+	std::cout << "no_child_process = " << boost::system::errc::errc_t::no_child_process << std::endl;
+	std::cout << "no_link = " << boost::system::errc::errc_t::no_link << std::endl;
+	std::cout << "no_lock_available = " << boost::system::errc::errc_t::no_lock_available << std::endl;
+	std::cout << "no_message_available = " << boost::system::errc::errc_t::no_message_available << std::endl;
+	std::cout << "no_message = " << boost::system::errc::errc_t::no_message << std::endl;
+	std::cout << "no_protocol_option = " << boost::system::errc::errc_t::no_protocol_option << std::endl;
+	std::cout << "no_space_on_device = " << boost::system::errc::errc_t::no_space_on_device << std::endl;
+	std::cout << "no_stream_resources = " << boost::system::errc::errc_t::no_stream_resources << std::endl;
+	std::cout << "no_such_device_or_address = " << boost::system::errc::errc_t::no_such_device_or_address << std::endl;
+	std::cout << "no_such_device = " << boost::system::errc::errc_t::no_such_device << std::endl;
+	std::cout << "no_such_file_or_directory = " << boost::system::errc::errc_t::no_such_file_or_directory << std::endl;
+	std::cout << "no_such_process = " << boost::system::errc::errc_t::no_such_process << std::endl;
+	std::cout << "not_a_directory = " << boost::system::errc::errc_t::not_a_directory << std::endl;
+	std::cout << "not_a_socket = " << boost::system::errc::errc_t::not_a_socket << std::endl;
+	std::cout << "not_a_stream = " << boost::system::errc::errc_t::not_a_stream << std::endl;
+	std::cout << "not_connected = " << boost::system::errc::errc_t::not_connected << std::endl;
+	std::cout << "not_enough_memory = " << boost::system::errc::errc_t::not_enough_memory << std::endl;
+	std::cout << "not_supported = " << boost::system::errc::errc_t::not_supported << std::endl;
+	std::cout << "operation_canceled = " << boost::system::errc::errc_t::operation_canceled << std::endl;
+	std::cout << "operation_in_progress = " << boost::system::errc::errc_t::operation_in_progress << std::endl;
+	std::cout << "operation_not_permitted = " << boost::system::errc::errc_t::operation_not_permitted << std::endl;
+	std::cout << "operation_not_supported = " << boost::system::errc::errc_t::operation_not_supported << std::endl;
+	std::cout << "operation_would_block = " << boost::system::errc::errc_t::operation_would_block << std::endl;
+	std::cout << "owner_dead = " << boost::system::errc::errc_t::owner_dead << std::endl;
+	std::cout << "permission_denied = " << boost::system::errc::errc_t::permission_denied << std::endl;
+	std::cout << "protocol_error = " << boost::system::errc::errc_t::protocol_error << std::endl;
+	std::cout << "protocol_not_supported = " << boost::system::errc::errc_t::protocol_not_supported << std::endl;
+	std::cout << "read_only_file_system = " << boost::system::errc::errc_t::read_only_file_system << std::endl;
+	std::cout << "resource_deadlock_would_occur = " << boost::system::errc::errc_t::resource_deadlock_would_occur << std::endl;
+	std::cout << "resource_unavailable_try_again = " << boost::system::errc::errc_t::resource_unavailable_try_again << std::endl;
+	std::cout << "result_out_of_range = " << boost::system::errc::errc_t::result_out_of_range << std::endl;
+	std::cout << "state_not_recoverable = " << boost::system::errc::errc_t::state_not_recoverable << std::endl;
+	std::cout << "stream_timeout = " << boost::system::errc::errc_t::stream_timeout << std::endl;
+	std::cout << "text_file_busy = " << boost::system::errc::errc_t::text_file_busy << std::endl;
+	std::cout << "timed_out = " << boost::system::errc::errc_t::timed_out << std::endl;
+	std::cout << "too_many_files_open_in_system = " << boost::system::errc::errc_t::too_many_files_open_in_system << std::endl;
+	std::cout << "too_many_files_open = " << boost::system::errc::errc_t::too_many_files_open << std::endl;
+	std::cout << "too_many_links = " << boost::system::errc::errc_t::too_many_links << std::endl;
+	std::cout << "too_many_symbolic_link_levels = " << boost::system::errc::errc_t::too_many_symbolic_link_levels << std::endl;
+	std::cout << "value_too_large = " << boost::system::errc::errc_t::value_too_large << std::endl;
+	std::cout << "wrong_protocol_type = " << boost::system::errc::errc_t::wrong_protocol_type << std::endl;
+	return 0;
+}
