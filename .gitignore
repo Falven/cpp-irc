@@ -1,1 +1,18 @@
+#CMake
+CMakeFiles/
+cmake_install.cmake
+CMakeCache.txt
+CPackConfig.cmake
+CPackSourceConfig.cmake
+CTestTestfile.cmake
+
+
+#Visual Studio
+*.vcxproj
+*.vcxproj.filters
+*.sln
+*.suo
+*.sdf
+
+#OS-X
 .DS_Store
