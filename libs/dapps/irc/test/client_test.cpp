@@ -4,7 +4,7 @@
 
 #include "dapps/irc/client.hpp"
 
-int main(int argc, const char * argv[])
+int main(int argc, const char * argv [])
 {
 	try
 	{
@@ -16,8 +16,8 @@ int main(int argc, const char * argv[])
 	}
 	catch (std::exception & e)
 	{
-	    std::cerr << "Exception: " << e.what() << "\n";
+		std::cerr << "Exception: " << e.what() << "\n";
 	}
 
-    return 0;
+	return 0;
 }

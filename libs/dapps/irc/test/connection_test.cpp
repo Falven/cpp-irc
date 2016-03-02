@@ -5,7 +5,7 @@
 
 #include "dapps/irc/connection.hpp"
 
-int main(int argc, const char * argv[])
+int main(int argc, const char * argv [])
 {
 	try
 	{
@@ -43,8 +43,8 @@ int main(int argc, const char * argv[])
 	}
 	catch (std::exception & e)
 	{
-	    std::cerr << "Exception: " << e.what() << std::endl;
+		std::cerr << "Exception: " << e.what() << std::endl;
 	}
 
-    return 0;
+	return 0;
 }

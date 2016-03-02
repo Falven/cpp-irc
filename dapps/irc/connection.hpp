@@ -36,7 +36,7 @@ namespace dapps
 				read_handler_(),
 				resolved_(false),
 				connected_(false)
-			{	
+			{
 			}
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -57,16 +57,16 @@ namespace dapps
 				{
 					switch (error.value())
 					{
-						case boost::system::errc::success:
-						{
-							resolved_ = true;
-							do_connect(iterator, handler);
-							break;
-						}
-						default:
-						{
-							do_error("Resolve attempt failed", error);
-						}
+					case boost::system::errc::success:
+					{
+						resolved_ = true;
+						do_connect(iterator, handler);
+						break;
+					}
+					default:
+					{
+						do_error("Resolve attempt failed", error);
+					}
 					}
 				});
 			}
@@ -141,27 +141,27 @@ namespace dapps
 				{
 					switch (error.value())
 					{
-						case boost::system::errc::success:
-						{
-							connected_ = true;
-							
-							do_read();
+					case boost::system::errc::success:
+					{
+						connected_ = true;
 
-							if (!message_queue_.empty())
-							{
-								do_write();
-							}
+						do_read();
 
-							if (handler)
-							{
-								handler(iterator);
-							}
-							break;
-						}
-						default:
+						if (!message_queue_.empty())
 						{
-							do_error("Connect attempt failed", error);
+							do_write();
 						}
+
+						if (handler)
+						{
+							handler(iterator);
+						}
+						break;
+					}
+					default:
+					{
+						do_error("Connect attempt failed", error);
+					}
 					}
 				});
 			}
@@ -175,33 +175,33 @@ namespace dapps
 				{
 					switch (error.value())
 					{
-						case boost::system::errc::success:
+					case boost::system::errc::success:
+					{
+						std::string read((std::istreambuf_iterator<char>(&reply_buffer_)),
+							std::istreambuf_iterator<char>());
+						if (read_handler_)
 						{
-							std::string read((std::istreambuf_iterator<char>(&reply_buffer_)),
-								std::istreambuf_iterator<char>());
-							if (read_handler_)
-							{
-								read_handler_(read);
-							}
-							do_read();
-							break;
+							read_handler_(read);
 						}
-// In case connection is lost.
+						do_read();
+						break;
+					}
+					// In case connection is lost.
 #ifdef _WIN32
 						// 10009
-						case WSAEBADF:
+					case WSAEBADF:
 						// 10057
-						case WSAENOTCONN:
+					case WSAENOTCONN:
 #else
-						case boost::system::errc::not_connected:
+					case boost::system::errc::not_connected:
 #endif
-						{
-							break;
-						}
-						default:
-						{
-							do_error("Receive reply failed", error);
-						}
+					{
+						break;
+					}
+					default:
+					{
+						do_error("Receive reply failed", error);
+					}
 					}
 				});
 			}
@@ -234,11 +234,11 @@ namespace dapps
 							}
 							break;
 						}
-// In case connection is lost.
+						// In case connection is lost.
 #ifdef _WIN32
 						// 10009
 						case WSAEBADF:
-						// 10057
+							// 10057
 						case WSAENOTCONN:
 #else
 						case boost::system::errc::not_connected:
@@ -250,8 +250,8 @@ namespace dapps
 						{
 							do_error("Send request failed", error);
 						}
-					}
-				});
+						}
+					});
 				}
 			}
 		};

@@ -12,7 +12,7 @@ namespace dapps
 				: is_invisible_(is_invisible), receives_wallops_(receives_wallops)
 			{
 			}
-			
+
 			const unsigned int get_mask() const
 			{
 				//0010 = w

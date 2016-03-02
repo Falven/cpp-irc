@@ -33,14 +33,14 @@ namespace dapps
 				const bool & is_operator,
 				const bool & is_local_operator,
 				const bool & receives_server_notices)
-			: 
-			  is_away_(is_away),
-			  is_invisible_(is_invisible),
-			  receives_wallops_(receives_wallops),
-			  restricted_connection_(restricted_connection),
-			  is_operator_(is_operator),
-			  is_local_operator_(is_local_operator),
-			  receives_server_notices_(receives_server_notices)
+				:
+				is_away_(is_away),
+				is_invisible_(is_invisible),
+				receives_wallops_(receives_wallops),
+				restricted_connection_(restricted_connection),
+				is_operator_(is_operator),
+				is_local_operator_(is_local_operator),
+				receives_server_notices_(receives_server_notices)
 			{}
 
 			mode_state()

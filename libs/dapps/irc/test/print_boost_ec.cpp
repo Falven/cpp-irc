@@ -2,7 +2,7 @@
 #include <string>
 #include <boost/system/error_code.hpp>
 
-int main(int argc, const char * argv[])
+int main(int argc, const char * argv [])
 {
 	std::cout << "success = " << boost::system::errc::errc_t::success << std::endl;
 	std::cout << "address_family_not_supported = " << boost::system::errc::errc_t::address_family_not_supported << std::endl;
