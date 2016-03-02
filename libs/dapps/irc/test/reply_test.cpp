@@ -1,16 +1,16 @@
+#include <string>
 #include <iostream>
 #include <exception>
 #include <boost/asio.hpp>
 
-#include "dapps/irc/client.hpp"
+#include "dapps/irc/messages/reply.hpp"
 
 int main(int argc, const char * argv[])
 {
 	try
 	{
-		dapps::irc::client client("irc.deltaanime.net", "6667");
-
-		client.login();
+		dapps::irc::reply rpl1(":irc.hinoto.dairc.net 461  PASS : Not enough parameters\r\n");
+		dapps::irc::reply rpl2("461  PASS : Not enough parameters\r\n");
 
 		std::cin >> std::string();
 	}

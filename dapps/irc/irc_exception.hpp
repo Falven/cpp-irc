@@ -18,19 +18,29 @@ namespace dapps
         {
         public:
 			explicit irc_exception(const std::string & message, const boost::system::error_code & ec)
-				: runtime_error(message + delim + ec.message()),
-				error_message(message),
-				error_code(ec)
+				: runtime_error(message + DELIM_ + ec.message()),
+				error_message_(message),
+				error_code_(ec)
             {
 			}
 
+			const std::string error_message() const
+			{
+				return error_message_;
+			}
+
+			const boost::system::error_code error_code() const
+			{
+				return error_code_;
+			}
+
         private:
-			static const std::string delim;
-            const std::string error_message;
-			const boost::system::error_code error_code;
+			static const std::string DELIM_;
+            const std::string error_message_;
+			const boost::system::error_code error_code_;
         };
 
-		const std::string irc_exception::delim(": ");
+		const std::string irc_exception::DELIM_(": ");
     }
 }
 

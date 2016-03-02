@@ -9,7 +9,7 @@ namespace dapps
 		{
 		public:
 			user_mode(const bool & receives_wallops, const bool & is_invisible)
-				: receives_wallops_(receives_wallops), is_invisible_(is_invisible)
+				: is_invisible_(is_invisible), receives_wallops_(receives_wallops)
 			{
 			}
 			
