@@ -17,6 +17,9 @@ CTestTestfile.cmake
 *.tlog
 *.cache
 *.lastbuildstate
+*.exe
+*.pdb
+*.ilk
 
 #OS-X
 .DS_Store
