@@ -7,7 +7,7 @@
 #include <ostream>
 #include <map>
 
-#include "message.hpp"
+#include "../message.hpp"
 
 namespace dapps
 {
@@ -151,15 +151,11 @@ namespace dapps
 		///
 		/// <remarks>   Francisco, 5/8/2015. </remarks>
 		///////////////////////////////////////////////////////////////////////////////
-		class reply
+		class reply : public message
 		{
 		public:
-			static const char PREFIX = 0x3a;
-
 			reply(const std::string & reply_str)
-				:rpl_(reply_str),
-				sstm_(reply_str),
-				prefix_(parse_prefix()),
+				: message(reply_str),
 				numeric_(parse_numeric()),
 				numeric_str_(parse_numeric_str()),
 				comment_(parse_comment())
@@ -181,51 +177,29 @@ namespace dapps
 				return comment_;
 			}
 
-			const std::string str() const
-			{
-				return rpl_;
-			}
-
 		private:
-			const std::string rpl_;
-			std::istringstream sstm_;
-			const std::string prefix_;
 			const rpl_id numeric_;
 			const std::string numeric_str_;
 			const std::string comment_;
 
-			const std::string parse_prefix()
-			{
-				std::string prefix;
-				if (sstm_.get() == PREFIX)
-				{
-					sstm_ >> prefix;
-				}
-				else
-				{
-					sstm_.seekg(0);
-				}
-				return prefix;
-			}
-
 			const rpl_id parse_numeric()
 			{
 				int numeric;
-				sstm_ >> numeric;
+				sstm >> numeric;
 				return rpl_id(numeric);
 			}
 
 			const std::string parse_numeric_str()
 			{
 				std::string numeric_str;
-				sstm_ >> numeric_str;
+				sstm >> numeric_str;
 				return numeric_str;
 			}
 
 			const std::string parse_comment()
 			{
 				std::string comment;
-				std::getline(sstm_, comment);
+				std::getline(sstm, comment, '\r');
 				return comment;
 			}
 		};

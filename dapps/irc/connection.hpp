@@ -9,7 +9,7 @@
 #include <boost/asio.hpp>
 
 #include "irc_exception.hpp"
-#include "messages/message.hpp"
+#include "message.hpp"
 
 namespace dapps
 {

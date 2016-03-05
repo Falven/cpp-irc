@@ -94,11 +94,14 @@ namespace dapps
 			/// </summary>
 			///////////////////////////////////////////////////////////////////////////
 			static const uint16_t MAX_SIZE = 512u;
+			static const char PREFIX = 0x3a;
 			static const char DELIMITER = 0x20;
 			static const std::string TERMINATION;
 
 			message(const std::string & message_str)
-				: message_str_(message_str)
+				: message_str_(message_str + TERMINATION),
+				sstm(message_str),
+				prefix(parse_prefix())
 			{
 				if (message_str_.length() > message::MAX_SIZE)
 				{
@@ -112,8 +115,26 @@ namespace dapps
 				return message_str_;
 			}
 
+		protected:
+			std::istringstream sstm;
+			const std::string prefix;
+
 		private:
 			const std::string message_str_;
+
+			const std::string parse_prefix()
+			{
+				std::string prefix;
+				if (sstm.get() == PREFIX)
+				{
+					sstm >> prefix;
+				}
+				else
+				{
+					sstm.seekg(0);
+				}
+				return prefix;
+			}
 		};
 
 		const std::string message::TERMINATION = "\r\n";

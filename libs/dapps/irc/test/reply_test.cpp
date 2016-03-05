@@ -3,7 +3,7 @@
 #include <exception>
 #include <boost/asio.hpp>
 
-#include "dapps/irc/messages/reply.hpp"
+#include "dapps/irc/replies/reply.hpp"
 
 int main(int argc, const char * argv [])
 {
