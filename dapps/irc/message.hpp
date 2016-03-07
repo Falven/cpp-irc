@@ -2,8 +2,10 @@
 #define MESSAGE_HPP
 
 #include <string>
+#include <regex>
 #include <stdexcept>
 #include <ostream>
+#include <boost/algorithm/string.hpp>
 
 namespace dapps
 {
@@ -94,16 +96,14 @@ namespace dapps
 			/// </summary>
 			///////////////////////////////////////////////////////////////////////////
 			static const uint16_t MAX_SIZE = 512u;
-			static const char PREFIX = 0x3a;
 			static const char DELIMITER = 0x20;
 			static const std::string TERMINATION;
 
-			message(const std::string & message_str)
-				: message_str_(message_str + TERMINATION),
-				sstm(message_str),
-				prefix(parse_prefix())
+			message(const std::string & msg_str)
+				: message_str(boost::algorithm::trim_copy(msg_str)),
+				prefix(init_prefix())
 			{
-				if (message_str_.length() > message::MAX_SIZE)
+				if (message_str.length() > message::MAX_SIZE)
 				{
 					throw std::invalid_argument("The provided message exceeds"
 						"the max allowable IRC message size.");
@@ -112,32 +112,30 @@ namespace dapps
 
 			const std::string str() const
 			{
-				return message_str_;
+				return message_str;
 			}
 
-		protected:
-			std::istringstream sstm;
-			const std::string prefix;
-
 		private:
-			const std::string message_str_;
+			static const std::regex regex_;
 
-			const std::string parse_prefix()
+			const std::string init_prefix()
 			{
 				std::string prefix;
-				if (sstm.get() == PREFIX)
+				std::smatch match;
+				if (std::regex_search(message_str, match, regex_))
 				{
-					sstm >> prefix;
-				}
-				else
-				{
-					sstm.seekg(0);
+					prefix = match[2].str();
 				}
 				return prefix;
 			}
+
+		protected:
+			const std::string message_str;
+			const std::string prefix;
 		};
 
 		const std::string message::TERMINATION = "\r\n";
+		const std::regex message::regex_(R"((:[ \t]*([\w.]*)){0,1})");
 	}
 }
 

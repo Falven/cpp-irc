@@ -1,12 +1,14 @@
-#ifndef REPLY_H
-#define REPLY_H
+#ifndef REPLY_HPP
+#define REPLY_HPP
 
 #include <string>
+#include <regex>
 #include <iostream>
 #include <sstream>
-#include <ostream>
-#include <map>
+#include <vector>
+#include <cctype>
 
+#include "../irc_exception.hpp"
 #include "../message.hpp"
 
 namespace dapps
@@ -156,9 +158,11 @@ namespace dapps
 		public:
 			reply(const std::string & reply_str)
 				: message(reply_str),
-				numeric_(parse_numeric()),
-				numeric_str_(parse_numeric_str()),
-				comment_(parse_comment())
+				match_(do_match()),
+				numeric_(static_cast<rpl_id>(std::stoi(match_[1].str()))),
+				numeric_str_(match_[2].str()),
+				args_(),
+				comment_(match_[4].str())
 			{
 			}
 
@@ -178,31 +182,25 @@ namespace dapps
 			}
 
 		private:
+			static const std::regex regex_;
+			const std::smatch match_;
 			const rpl_id numeric_;
 			const std::string numeric_str_;
+			const std::vector<std::string> args_;
 			const std::string comment_;
 
-			const rpl_id parse_numeric()
+			const std::smatch do_match()
 			{
-				int numeric;
-				sstm >> numeric;
-				return rpl_id(numeric);
-			}
-
-			const std::string parse_numeric_str()
-			{
-				std::string numeric_str;
-				sstm >> numeric_str;
-				return numeric_str;
-			}
-
-			const std::string parse_comment()
-			{
-				std::string comment;
-				std::getline(sstm, comment, '\r');
-				return comment;
+				std::smatch match;
+				if (!std::regex_search(message_str, match, regex_))
+				{
+					throw std::invalid_argument("The provided message is not a valid irc reply.");
+				}
+				return match;
 			}
 		};
+
+		const std::regex reply::regex_(R"([ \t]*(\d+)[ \t]*([a-zA-Z]+)[ \t]*(:\s*([\w \t]*)){0,1})");
 	}
 }
 

@@ -5,6 +5,8 @@
 #include <regex>
 #include <stdexcept>
 
+#include "regex_definitions.hpp"
+
 namespace dapps
 {
 	namespace irc
@@ -36,7 +38,7 @@ namespace dapps
 			static const std::string::size_type MAX_LENGTH = 9u;
 
 			nickname(const std::string & name)
-				: nickname_(name)
+				: nickname_str_(name)
 			{
 				if (!nickname::is_valid(name))
 					throw std::invalid_argument("The provided name does not "
@@ -45,38 +47,26 @@ namespace dapps
 
 			static bool is_valid(const std::string & nickname)
 			{
-				return std::regex_match(nickname, nickname_regex_);
+				return std::regex_match(nickname, regex_);
 			}
 
 			const std::string str() const
 			{
-				return nickname_;
+				return nickname_str_;
 			}
 
 		private:
-			/// <summary> Regex used to validate proper nickname input. </summary>
-			static const std::regex nickname_regex_;
 			/// <summary> The nickname string. </summary>
-			const std::string nickname_;
+			const std::string nickname_str_;
+			/// <summary> Regex used to validate proper nickname input. </summary>
+			static const std::regex regex_;
 		};
 
-		// [[A-Za-z][\x5B-\x60\x7B-\x7D]] {0,8}
-		// nickname   =  ( letter / special ) *8( letter / digit / special / "-" )
-		// letter     =  %x41-5A / %x61-7A       ; A-Z / a-z
-		// special    =  %x5B-60 / %x7B-7D; "[", "]", "\", "`", "_", "^", "{", "|", "}"
-		// digit      =  %x30-39                 ; 0-9
-		// static members must be defined in one translation unit to fulfil the one definition rule.
-		// otherwise such members would be defined in each translation unit that includes the header file.
-		// Each prefix characterizes a different channel type.  The definition
-		// of the channel types is not relevant to the client - server protocol
-		// and thus it is beyond the scope of this document.More details can
-		// be found in "Internet Relay Chat: Channel Management"[IRC - CHAN].
-		//
 		// TODO Because of IRC's Scandinavian origin, the characters {}|^ are
 		// considered to be the lower case equivalents of the characters []\~,
 		// respectively.This is a critical issue when determining the
 		// equivalence of two nicknames or channel names.
-		const std::regex nickname::nickname_regex_(R"([A-Za-z\x5B-\x60\x7B-\x7D][A-Za-z\x5B-\x60\x7B-\x7D0-9\-]*)");
+		const std::regex nickname::regex_(dapps::regex::nickname);
 	}
 }
 

@@ -8,7 +8,6 @@
 #include <boost/asio.hpp>
 
 #include "connection.hpp"
-#include "messages/reply.hpp"
 
 namespace dapps
 {
@@ -62,7 +61,7 @@ namespace dapps
 
 			void handle_read(const std::string & read)
 			{
-				reply rpl(read);
+				
 			}
 
 			void parse_reply(const std::string & reply)
