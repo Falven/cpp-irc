@@ -17,12 +17,12 @@ int main(int argc, const char * argv [])
 
 		dapps::irc::connection con(io_service);
 
-		std::string domain("irc.deltaanime.net");
+		std::string hostname("irc.deltaanime.net");
 		std::string port("6667");
 
-		std::cout << "Connecting to: " << domain << ":" << port << std::endl;
+		std::cout << "Connecting to: " << hostname << ":" << port << std::endl;
 
-		con.establish_async(domain, port,
+		con.establish_async(hostname, port,
 			[&con](const boost::asio::ip::tcp::resolver::iterator & iterator)
 		{
 			std::cout << "Connected to: " << iterator->host_name() << std::endl;
