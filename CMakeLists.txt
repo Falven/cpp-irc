@@ -22,7 +22,7 @@ if(WIN32)
 	add_definitions(-D_WIN32_WINNT=0x0501)
 endif()
 
-find_package(Boost 1.58.0 REQUIRED system timer chrono)
+find_package(Boost 1.58.0 REQUIRED system date_time regex)
 
 if (NOT Boost_FOUND)
     if(BUILD_SHARED_LIBS)
