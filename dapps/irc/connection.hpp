@@ -57,16 +57,16 @@ namespace dapps
 				{
 					switch (error.value())
 					{
-					case boost::system::errc::success:
-					{
-						resolved_ = true;
-						do_connect(iterator, handler);
-						break;
-					}
-					default:
-					{
-						do_error("Resolve attempt failed", error);
-					}
+						case boost::system::errc::success:
+						{
+							resolved_ = true;
+							do_connect(iterator, handler);
+							break;
+						}
+						default:
+						{
+							do_error("Resolve attempt failed", error);
+						}
 					}
 				});
 			}
@@ -135,33 +135,34 @@ namespace dapps
 			void do_connect(boost::asio::ip::tcp::resolver::iterator endpoint_iterator,
 				const std::function<void(const boost::asio::ip::tcp::resolver::iterator & iterator)> & handler = {})
 			{
-				boost::asio::async_connect(socket_,
+				boost::asio::async_connect(
+					socket_,
 					endpoint_iterator,
 					[this, handler](const boost::system::error_code & error, boost::asio::ip::tcp::resolver::iterator iterator)
 				{
 					switch (error.value())
 					{
-					case boost::system::errc::success:
-					{
-						connected_ = true;
-
-						do_read();
-
-						if (!message_queue_.empty())
+						case boost::system::errc::success:
 						{
-							do_write();
-						}
+							connected_ = true;
 
-						if (handler)
-						{
-							handler(iterator);
+							do_read();
+
+							if (!message_queue_.empty())
+							{
+								do_write();
+							}
+
+							if (handler)
+							{
+								handler(iterator);
+							}
+							break;
 						}
-						break;
-					}
-					default:
-					{
-						do_error("Connect attempt failed", error);
-					}
+						default:
+						{
+							do_error("Connect attempt failed", error);
+						}
 					}
 				});
 			}
@@ -175,33 +176,33 @@ namespace dapps
 				{
 					switch (error.value())
 					{
-					case boost::system::errc::success:
-					{
-						std::string read((std::istreambuf_iterator<char>(&reply_buffer_)),
-							std::istreambuf_iterator<char>());
-						if (read_handler_)
+						case boost::system::errc::success:
 						{
-							read_handler_(read);
+							std::string read((std::istreambuf_iterator<char>(&reply_buffer_)),
+								std::istreambuf_iterator<char>());
+							if (read_handler_)
+							{
+								read_handler_(read);
+							}
+							do_read();
+							break;
 						}
-						do_read();
-						break;
-					}
-					// In case connection is lost.
-#ifdef _WIN32
-						// 10009
-					case WSAEBADF:
-						// 10057
-					case WSAENOTCONN:
-#else
-					case boost::system::errc::not_connected:
-#endif
-					{
-						break;
-					}
-					default:
-					{
-						do_error("Receive reply failed", error);
-					}
+						// In case connection is lost.
+	#ifdef _WIN32
+							// 10009
+						case WSAEBADF:
+							// 10057
+						case WSAENOTCONN:
+	#else
+						case boost::system::errc::not_connected:
+	#endif
+						{
+							break;
+						}
+						default:
+						{
+							do_error("Receive reply failed", error);
+						}
 					}
 				});
 			}
@@ -217,39 +218,39 @@ namespace dapps
 					{
 						switch (error.value())
 						{
-						case boost::system::errc::success:
-						{
-							auto next = message_queue_.front();
-							message_queue_.pop();
-
-							auto next_callback = std::get<1>(next);
-							if (next_callback)
+							case boost::system::errc::success:
 							{
-								next_callback(std::get<0>(next));
-							}
+								auto next = message_queue_.front();
+								message_queue_.pop();
 
-							if (!message_queue_.empty())
-							{
-								do_write();
+								auto next_callback = std::get<1>(next);
+								if (next_callback)
+								{
+									next_callback(std::get<0>(next));
+								}
+
+								if (!message_queue_.empty())
+								{
+									do_write();
+								}
+								break;
 							}
-							break;
-						}
-						// In case connection is lost.
+							// In case connection is lost.
 #ifdef _WIN32
-						// 10009
-						case WSAEBADF:
+							// 10009
+							case WSAEBADF:
 							// 10057
-						case WSAENOTCONN:
+							case WSAENOTCONN:
 #else
-						case boost::system::errc::not_connected:
+							case boost::system::errc::not_connected:
 #endif
-						{
-							break;
-						}
-						default:
-						{
-							do_error("Send request failed", error);
-						}
+							{
+								break;
+							}
+							default:
+							{
+								do_error("Send request failed", error);
+							}
 						}
 					});
 				}
